@@ -47,6 +47,9 @@ npx prisma db push
 
 # Generate Prisma client
 npx prisma generate
+
+# Seed with test data
+npm run db:seed
 ```
 
 ### Development Workflow
@@ -61,6 +64,47 @@ npx prisma studio
 # Reset database (⚠️ deletes all data)
 npx prisma db push --force-reset
 ```
+
+---
+
+## Testing Multitenant Functionality
+
+### How It Works
+
+The app uses subdomains to identify different restaurant tenants:
+
+1. **Middleware** extracts subdomain from hostname
+2. **Database query** finds tenant by subdomain
+3. **Page renders** with tenant-specific content
+4. **Data fetched** from Supabase on every request
+
+### Local Testing
+
+Test different restaurant tenants using subdomains:
+
+```
+http://marios.localhost:3000
+http://express.localhost:3000
+http://gustavs.localhost:3000
+```
+
+No additional configuration needed - works out of the box!
+
+### Test URLs
+
+After seeding the database, you can test:
+
+- **`http://marios.localhost:3000`** → Shows "Welcome to Mario's Pizza"
+- **`http://express.localhost:3000`** → Shows "Welcome to Pizza Express"
+- **`http://gustavs.localhost:3000`** → Shows "Welcome to Gustav's Pizzeria"
+- **`http://localhost:3000`** → Shows "Restaurant Not Found" error
+
+### Production
+
+In production, restaurants will use:
+
+- **Subdomains:** `marios.yourplatform.com`
+- **Custom domains:** `mariospizza.se` (premium feature)
 
 ---
 
