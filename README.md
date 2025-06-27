@@ -136,3 +136,52 @@ In production, restaurants will use:
 - Backend logic is implemented via **Next.js Server Actions** or **`/api` routes**
 - Each request checks tenant context and user auth before accessing data
 - No external API layer needed (Next.js handles everything)
+
+---
+
+## Security (Prototype Phase)
+
+### Current State: Unrestricted Access
+
+**⚠️ For prototype development only - NOT production ready**
+
+- **Database access is unrestricted** - Anyone with connection string can modify data
+- **No authentication required** - No user verification for database operations
+- **No Row Level Security (RLS)** - No data isolation policies
+- **Direct Prisma access** - Full database control for rapid development
+
+### Required for Production
+
+**Phase 1: Basic Security**
+
+- Implement Clerk authentication
+- Add user management and roles
+- Create protected admin API endpoints
+- Basic input validation and sanitization
+
+**Phase 2: Database Security**
+
+- Enable Row Level Security (RLS) on all tables
+- Create tenant-specific access policies
+- Implement proper connection string security
+- Add audit logging for data changes
+
+**Phase 3: Advanced Security**
+
+- API rate limiting and DDoS protection
+- Advanced user permissions and role management
+- Data encryption at rest and in transit
+- Comprehensive audit trails
+- Security monitoring and alerting
+
+### Development vs Production
+
+```env
+# Development (current) - Unrestricted for speed
+DATABASE_URL="postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-eu-north-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+
+# Production (future) - Restricted and secure
+DATABASE_URL="postgresql://service_user.[PROJECT-REF]:[SERVICE_PASSWORD]@aws-0-eu-north-1.pooler.supabase.com:6543/postgres?pgbouncer=true&sslmode=require"
+```
+
+**Note:** Keep this prototype setup for rapid development, but implement proper security before any production deployment or customer data handling.
