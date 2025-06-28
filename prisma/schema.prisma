@@ -24,4 +24,63 @@ model Tenant {
   isActive    Boolean @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  // Relations
+  menus Menu[]
+}
+
+model Menu {
+  id          String   @id @default(cuid())
+  tenantId    String   // Links to Tenant
+  name        String   // "Lunch Menu", "Dinner Menu", etc.
+  description String?  // Optional description
+  isActive    Boolean  @default(true)
+  isDefault   Boolean  @default(false) // Which menu shows by default
+  sortOrder   Int      @default(0)     // For ordering menus
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  categories  MenuCategory[]
+  items       MenuItem[]
+
+  @@unique([tenantId, name]) // Prevent duplicate menu names per tenant
+}
+
+model MenuCategory {
+  id          String   @id @default(cuid())
+  menuId      String   // Links to Menu
+  name        String   // "Pizzas", "Drinks", "Sides", etc.
+  description String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  menu        Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  items       MenuItem[]
+
+  @@unique([menuId, name]) // Prevent duplicate category names per menu
+}
+
+model MenuItem {
+  id            String   @id @default(cuid())
+  menuId        String   // Links to Menu
+  categoryId    String   // Links to MenuCategory
+  name          String   // "Margherita Pizza"
+  description   String?  // "Fresh mozzarella, tomato sauce, basil"
+  price         Decimal  @db.Decimal(10, 2)
+  imageUrl      String?
+  isAvailable   Boolean  @default(true)
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  menu          Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  category      MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([menuId, name]) // Prevent duplicate item names per menu
 }

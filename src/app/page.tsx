@@ -1,4 +1,5 @@
 import { getCurrentTenant } from "@/lib/tenant";
+import Menu from "./components/Menu";
 
 export default async function HomePage() {
   try {
@@ -16,22 +17,7 @@ export default async function HomePage() {
         </header>
 
         <main className="max-w-7xl mx-auto px-4 py-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">Restaurant Info</h2>
-            <div className="space-y-2">
-              <p>
-                <strong>Name:</strong> {tenant.displayName}
-              </p>
-              <p>
-                <strong>Subdomain:</strong> {tenant.subdomain}
-              </p>
-              {tenant.domain && (
-                <p>
-                  <strong>Custom Domain:</strong> {tenant.domain}
-                </p>
-              )}
-            </div>
-          </div>
+          <Menu />
         </main>
       </div>
     );
