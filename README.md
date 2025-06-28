@@ -124,11 +124,15 @@ In production, restaurants will use:
 
 ### Database (Supabase PostgreSQL)
 
-- Tables are designed with a `tenantId` field to isolate customer data
+- Tables are designed with proper relations to isolate tenant data
 - Example tables:
-  - `tenants` – info about each customer (name, domain, colors)
-  - `users` – links `clerkUserId` to `tenantId` and user role
-  - `menus`, `products`, `orders` – all tied to a specific tenant
+  - `Tenant` – restaurant information (name, subdomain, domain, displayName)
+  - `Menu` – restaurant menus (name, description, isDefault, sortOrder)
+  - `MenuCategory` – menu categories (Pizzas, Drinks, Sides, etc.)
+  - `MenuItem` – individual menu items (name, description, price, availability)
+  - `User` – links `clerkUserId` to `tenantId` and user role (future)
+  - `Order` – customer orders (future)
+- All tables use proper foreign key relationships for data integrity
 - Prisma is used for schema modeling and database queries
 
 ### API
