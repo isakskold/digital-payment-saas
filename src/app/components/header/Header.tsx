@@ -1,5 +1,6 @@
 import { getCurrentTenant } from "@/lib/tenant";
 import CartToggle from "./CartToggle";
+import OrderStatusToggle from "./OrderStatusToggle";
 
 export default async function Header() {
   const tenant = await getCurrentTenant();
@@ -13,7 +14,10 @@ export default async function Header() {
             </h1>
             <p className="mt-2 text-gray-600">Order delicious food online</p>
           </div>
-          <CartToggle />
+          <div className="flex items-center gap-3">
+            <OrderStatusToggle />
+            <CartToggle />
+          </div>
         </div>
       </div>
     </header>

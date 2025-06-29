@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useCartStore } from "@/zustand/useCartStore";
+import { useOrderStore, ActiveOrder } from "@/zustand/useOrderStore";
 
 interface CheckoutModalProps {
   onClose: () => void;
@@ -13,6 +14,7 @@ export default function CheckoutModal({
   onSuccess,
 }: CheckoutModalProps) {
   const items = useCartStore((state) => state.items);
+  const addOrder = useOrderStore((state) => state.addOrder);
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -27,11 +29,80 @@ export default function CheckoutModal({
     instructions: "",
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement order submission
-    console.log("Submitting order:", { formData, items, total });
-    onSuccess();
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const orderData = {
+        customerName: formData.name,
+        customerEmail: formData.email,
+        customerPhone: formData.phone,
+        orderType: formData.orderType.toUpperCase() as "PICKUP" | "DELIVERY",
+        deliveryAddress:
+          formData.orderType === "delivery" ? formData.address : undefined,
+        orderInstructions: formData.instructions || undefined,
+        items: items.map((item) => ({
+          menuItemId: item.id,
+          quantity: item.quantity,
+          specialInstructions: item.specialInstructions || undefined,
+        })),
+      };
+
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to submit order");
+      }
+
+      // Create order object for the store
+      const activeOrder: ActiveOrder = {
+        id: result.order.id,
+        orderNumber: result.order.orderNumber,
+        status: result.order.status,
+        totalAmount: Number(result.order.totalAmount),
+        orderType: result.order.orderType,
+        estimatedTime: result.order.estimatedTime,
+        customerName: formData.name,
+        customerPhone: formData.phone,
+        customerEmail: formData.email,
+        deliveryAddress:
+          formData.orderType === "delivery" ? formData.address : undefined,
+        orderInstructions: formData.instructions || undefined,
+        createdAt: new Date().toISOString(),
+        items: items.map((item) => ({
+          id: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          unitPrice: Number(item.price),
+          totalPrice: Number(item.price) * item.quantity,
+          specialInstructions: item.specialInstructions,
+        })),
+      };
+
+      // Save order to store and clear cart
+      addOrder(activeOrder);
+      useCartStore.getState().clearCart();
+      onSuccess();
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error ? error.message : "Failed to submit order"
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -157,6 +228,13 @@ export default function CheckoutModal({
               rows={2}
             />
 
+            {/* Error Message */}
+            {submitError && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                <p className="text-red-600 text-sm">{submitError}</p>
+              </div>
+            )}
+
             {/* Total */}
             <div className="border-t pt-4">
               <div className="flex justify-between font-semibold text-lg">
@@ -170,15 +248,17 @@ export default function CheckoutModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                disabled={isSubmitting}
+                className="flex-1 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                disabled={isSubmitting}
+                className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Place Order
+                {isSubmitting ? "Placing Order..." : "Place Order"}
               </button>
             </div>
           </form>

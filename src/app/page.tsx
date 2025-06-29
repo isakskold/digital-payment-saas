@@ -1,6 +1,8 @@
 import Menu from "./components/menu/Menu";
 import Cart from "./components/cart/Cart";
 import Header from "./components/header/Header";
+import OrderStatusModal from "./components/order/OrderStatusModal";
+import CartIndicator from "./components/cart/CartIndicator";
 
 export default async function HomePage() {
   try {
@@ -13,6 +15,8 @@ export default async function HomePage() {
         </main>
 
         <Cart />
+        <OrderStatusModal />
+        <CartIndicator />
       </div>
     );
   } catch (error) {

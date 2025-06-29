@@ -52,60 +52,115 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       items: [],
       isOpen: false,
+      totalItems: 0,
+      subtotal: 0,
+      tax: 0,
+      total: 0,
 
       addItem: (item) => {
         const { items } = get();
         const existingItem = items.find((i) => i.id === item.id);
 
+        let newItems;
         if (existingItem) {
           // Update quantity if item already exists
-          set({
-            items: items.map((i) =>
-              i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
-            ),
-          });
+          newItems = items.map((i) =>
+            i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+          );
         } else {
           // Add new item with quantity 1
-          set({
-            items: [...items, { ...item, quantity: 1 }],
-          });
+          newItems = [...items, { ...item, quantity: 1 }];
         }
+
+        // Calculate computed values
+        const totalItems = newItems.reduce(
+          (sum, item) => sum + item.quantity,
+          0
+        );
+        const subtotal = newItems.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0
+        );
+
+        set({
+          items: newItems,
+          totalItems,
+          subtotal,
+          total: subtotal,
+        });
       },
 
       removeItem: (itemId) => {
         const { items } = get();
+        const newItems = items.filter((item) => item.id !== itemId);
+
+        // Calculate computed values
+        const totalItems = newItems.reduce(
+          (sum, item) => sum + item.quantity,
+          0
+        );
+        const subtotal = newItems.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0
+        );
+
         set({
-          items: items.filter((item) => item.id !== itemId),
+          items: newItems,
+          totalItems,
+          subtotal,
+          total: subtotal,
         });
       },
 
       updateQuantity: (itemId, quantity) => {
-        const { items } = get();
         if (quantity <= 0) {
           get().removeItem(itemId);
           return;
         }
 
+        const { items } = get();
+        const newItems = items.map((item) =>
+          item.id === itemId ? { ...item, quantity } : item
+        );
+
+        // Calculate computed values
+        const totalItems = newItems.reduce(
+          (sum, item) => sum + item.quantity,
+          0
+        );
+        const subtotal = newItems.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0
+        );
+
         set({
-          items: items.map((item) =>
-            item.id === itemId ? { ...item, quantity } : item
-          ),
+          items: newItems,
+          totalItems,
+          subtotal,
+          total: subtotal,
         });
       },
 
       updateSpecialInstructions: (itemId, instructions) => {
         const { items } = get();
+        const newItems = items.map((item) =>
+          item.id === itemId
+            ? { ...item, specialInstructions: instructions }
+            : item
+        );
+
         set({
-          items: items.map((item) =>
-            item.id === itemId
-              ? { ...item, specialInstructions: instructions }
-              : item
-          ),
+          items: newItems,
         });
       },
 
       clearCart: () => {
-        set({ items: [] });
+        set({
+          items: [],
+          totalItems: 0,
+          subtotal: 0,
+          total: 0,
+        });
       },
 
       toggleCart: () => {
@@ -119,37 +174,15 @@ export const useCartStore = create<CartStore>()(
       closeCart: () => {
         set({ isOpen: false });
       },
-
-      // Computed values
-      get totalItems() {
-        const state = get();
-        if (!state || !state.items) return 0;
-        return state.items.reduce((sum, item) => sum + item.quantity, 0);
-      },
-
-      get subtotal() {
-        const state = get();
-        if (!state || !state.items) return 0;
-        return state.items.reduce(
-          (sum, item) => sum + item.price * item.quantity,
-          0
-        );
-      },
-
-      get tax() {
-        // Tax calculation removed - keeping for future use
-        return 0;
-      },
-
-      get total() {
-        const state = get();
-        if (!state) return 0;
-        return state.subtotal;
-      },
     }),
     {
       name: `cart-storage-${getTenantKey()}`,
-      partialize: (state) => ({ items: state.items }),
+      partialize: (state) => ({
+        items: state.items,
+        totalItems: state.totalItems,
+        subtotal: state.subtotal,
+        total: state.total,
+      }),
     }
   )
 );
