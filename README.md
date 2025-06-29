@@ -67,6 +67,55 @@ npx prisma db push --force-reset
 
 ---
 
+## Current Functionality (Prototype Status)
+
+### ✅ Completed Features
+
+**Customer Ordering Flow:**
+
+- Menu display with items and prices
+- Add to cart functionality with visual feedback
+- Cart management (add, remove, update quantities, special instructions)
+- Persistent cart state across sessions
+- Improved UX with bottom cart indicator and flash animations
+- Checkout modal with customer information collection
+- Order placement and confirmation
+- Order status tracking modal
+
+**Cart & Checkout Experience:**
+
+- Reactive cart indicator at bottom of screen (hides when modals open)
+- "Add to cart" button feedback (turns green, shows "Added!")
+- Cart sidebar with item management
+- Checkout form with delivery/pickup options
+- Order confirmation with status tracking
+
+**Order Management:**
+
+- Order storage and persistence
+- Order status states (PENDING, CONFIRMED, PREPARING, etc.)
+- Order history and active order tracking
+
+### 🚧 In Development
+
+**Admin Panel (Next Priority):**
+
+- Order management dashboard for restaurant staff
+- Order status updates and notifications
+- Kitchen workflow integration
+
+### 🎯 Complete User Flow
+
+1. **Customer visits restaurant subdomain** (e.g., `marios.localhost:3000`)
+2. **Browses menu** and sees available items
+3. **Adds items to cart** with immediate visual feedback
+4. **Views cart** via bottom indicator or header button
+5. **Proceeds to checkout** with customer details
+6. **Places order** and receives confirmation
+7. **Tracks order status** via order status modal
+
+---
+
 ## Testing Multitenant Functionality
 
 ### How It Works
