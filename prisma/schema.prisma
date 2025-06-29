@@ -27,6 +27,7 @@ model Tenant {
 
   // Relations
   menus Menu[]
+  orders Order[]
 }
 
 model Menu {
@@ -81,6 +82,76 @@ model MenuItem {
   // Relations
   menu          Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
   category      MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  orderItems    OrderItem[]
 
   @@unique([menuId, name]) // Prevent duplicate item names per menu
+}
+
+model Order {
+  id            String   @id @default(cuid())
+  tenantId      String   // Links to Tenant
+  orderNumber   String   // Human-readable order number (e.g., "MARIOS-001")
+  orderType     OrderType @default(DELIVERY) // PICKUP or DELIVERY
+  status        OrderStatus @default(PENDING)
+  totalAmount   Decimal  @db.Decimal(10, 2)
+  taxAmount     Decimal  @db.Decimal(10, 2) @default(0)
+  deliveryFee   Decimal  @db.Decimal(10, 2) @default(0)
+  
+  // Delivery-specific fields (only used when orderType = DELIVERY)
+  deliveryAddress String?
+  estimatedDeliveryTime DateTime?
+  actualDeliveryTime DateTime?
+  
+  // Pickup-specific fields (only used when orderType = PICKUP)
+  estimatedPickupTime DateTime?
+  actualPickupTime DateTime?
+  
+  // General order information (for both pickup and delivery)
+  orderInstructions String? // Special instructions for the order
+  customerName  String  // For guest orders
+  customerPhone String  // For guest orders
+  customerEmail String  // For guest orders
+  address       String? // For guest orders (delivery address)
+  city          String?
+  postalCode    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  tenant       Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  items        OrderItem[]
+
+  @@unique([tenantId, orderNumber]) // Prevent duplicate order numbers per tenant
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String   // Links to Order
+  menuItemId  String   // Links to MenuItem
+  quantity    Int
+  unitPrice   Decimal  @db.Decimal(10, 2) // Price at time of order
+  totalPrice  Decimal  @db.Decimal(10, 2) // quantity * unitPrice
+  specialInstructions String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItem    MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Restrict)
+}
+
+enum OrderStatus {
+  PENDING     // Order received, waiting for confirmation
+  CONFIRMED   // Order confirmed by restaurant
+  PREPARING   // Order is being prepared
+  READY       // Order is ready for pickup/delivery
+  OUT_FOR_DELIVERY // Order is being delivered
+  DELIVERED   // Order has been delivered
+  CANCELLED   // Order was cancelled
+  COMPLETED   // Order completed successfully
+}
+
+enum OrderType {
+  PICKUP      // Customer picks up the order
+  DELIVERY    // Order is delivered to customer
 }

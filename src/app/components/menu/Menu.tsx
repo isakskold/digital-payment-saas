@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { headers } from "next/headers";
+import AddToCartButton from "./AddToCartButton";
 
 async function getMenuData(tenantId: string) {
   const menu = await db.menu.findFirst({
@@ -113,9 +114,12 @@ export default async function Menu() {
                       {item.description}
                     </p>
                   )}
-                  <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium">
-                    Add to Order
-                  </button>
+                  <AddToCartButton
+                    id={item.id}
+                    name={item.name}
+                    price={Number(item.price)}
+                    imageUrl={item.imageUrl ?? undefined}
+                  />
                 </div>
               </div>
             ))}

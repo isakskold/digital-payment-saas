@@ -1,24 +1,18 @@
-import { getCurrentTenant } from "@/lib/tenant";
-import Menu from "./components/Menu";
+import Menu from "./components/menu/Menu";
+import Cart from "./components/cart/Cart";
+import Header from "./components/header/Header";
 
 export default async function HomePage() {
   try {
-    const tenant = await getCurrentTenant();
-
     return (
       <div className="min-h-screen bg-gray-50">
-        <header className="bg-white shadow">
-          <div className="max-w-7xl mx-auto px-4 py-6">
-            <h1 className="text-3xl font-bold text-gray-900">
-              Welcome to {tenant.displayName}
-            </h1>
-            <p className="mt-2 text-gray-600">Order delicious food online</p>
-          </div>
-        </header>
+        <Header />
 
         <main className="max-w-7xl mx-auto px-4 py-8">
           <Menu />
         </main>
+
+        <Cart />
       </div>
     );
   } catch (error) {
