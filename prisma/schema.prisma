@@ -143,10 +143,8 @@ model OrderItem {
 enum OrderStatus {
   PENDING     // Order received, waiting for confirmation
   CONFIRMED   // Order confirmed by restaurant
-  PREPARING   // Order is being prepared
   READY       // Order is ready for pickup/delivery
   OUT_FOR_DELIVERY // Order is being delivered
-  DELIVERED   // Order has been delivered
   CANCELLED   // Order was cancelled
   COMPLETED   // Order completed successfully
 }

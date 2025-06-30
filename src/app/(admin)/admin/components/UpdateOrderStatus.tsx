@@ -28,12 +28,12 @@ export default function UpdateOrderStatus({
     });
   };
 
+  const allStatuses = Object.values(OrderStatus);
+
   const availableStatuses =
     orderType === "PICKUP"
-      ? Object.values(OrderStatus).filter(
-          (s) => s !== "OUT_FOR_DELIVERY" && s !== "DELIVERED"
-        )
-      : Object.values(OrderStatus);
+      ? allStatuses.filter((s) => s !== "OUT_FOR_DELIVERY")
+      : allStatuses.filter((s) => s !== "READY");
 
   return (
     <div className="flex items-center space-x-2">

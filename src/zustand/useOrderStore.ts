@@ -23,11 +23,10 @@ export interface ActiveOrder {
   status:
     | "PENDING"
     | "CONFIRMED"
-    | "PREPARING"
     | "READY"
     | "OUT_FOR_DELIVERY"
-    | "DELIVERED"
-    | "CANCELLED";
+    | "CANCELLED"
+    | "COMPLETED";
   totalAmount: number;
   orderType: "PICKUP" | "DELIVERY";
   estimatedTime: string;

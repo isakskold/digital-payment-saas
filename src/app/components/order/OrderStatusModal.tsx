@@ -20,16 +20,14 @@ export default function OrderStatusModal() {
         return "text-yellow-600 bg-yellow-50 border-yellow-200";
       case "CONFIRMED":
         return "text-blue-600 bg-blue-50 border-blue-200";
-      case "PREPARING":
-        return "text-orange-600 bg-orange-50 border-orange-200";
       case "READY":
         return "text-green-600 bg-green-50 border-green-200";
       case "OUT_FOR_DELIVERY":
         return "text-purple-600 bg-purple-50 border-purple-200";
-      case "DELIVERED":
-        return "text-green-700 bg-green-50 border-green-200";
       case "CANCELLED":
         return "text-red-600 bg-red-50 border-red-200";
+      case "COMPLETED":
+        return "text-green-700 bg-green-50 border-green-200";
       default:
         return "text-gray-600 bg-gray-50 border-gray-200";
     }
@@ -41,16 +39,14 @@ export default function OrderStatusModal() {
         return "Order Received";
       case "CONFIRMED":
         return "Confirmed & Preparing";
-      case "PREPARING":
-        return "Being Prepared";
       case "READY":
         return "Ready for Pickup";
       case "OUT_FOR_DELIVERY":
         return "Out for Delivery";
-      case "DELIVERED":
-        return "Delivered";
       case "CANCELLED":
         return "Cancelled";
+      case "COMPLETED":
+        return "Completed";
       default:
         return status;
     }
@@ -59,8 +55,8 @@ export default function OrderStatusModal() {
   const getProgressSteps = () => {
     const steps =
       activeOrder.orderType === "DELIVERY"
-        ? ["PENDING", "CONFIRMED", "OUT_FOR_DELIVERY", "DELIVERED"]
-        : ["PENDING", "CONFIRMED", "READY"];
+        ? ["PENDING", "CONFIRMED", "OUT_FOR_DELIVERY", "COMPLETED"]
+        : ["PENDING", "CONFIRMED", "READY", "COMPLETED"];
 
     const currentIndex = steps.indexOf(activeOrder.status);
 
@@ -78,7 +74,7 @@ export default function OrderStatusModal() {
   };
 
   const isCompleted =
-    activeOrder.status === "DELIVERED" || activeOrder.status === "CANCELLED";
+    activeOrder.status === "COMPLETED" || activeOrder.status === "CANCELLED";
 
   return (
     <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">

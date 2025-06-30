@@ -18,16 +18,14 @@ export default function OrderStatusToggle() {
         return "bg-yellow-500";
       case "CONFIRMED":
         return "bg-blue-500";
-      case "PREPARING":
-        return "bg-orange-500";
       case "READY":
         return "bg-green-500";
       case "OUT_FOR_DELIVERY":
         return "bg-purple-500";
-      case "DELIVERED":
-        return "bg-green-600";
       case "CANCELLED":
         return "bg-red-500";
+      case "COMPLETED":
+        return "bg-green-600";
       default:
         return "bg-gray-500";
     }
@@ -39,16 +37,14 @@ export default function OrderStatusToggle() {
         return "Pending";
       case "CONFIRMED":
         return "Confirmed";
-      case "PREPARING":
-        return "Preparing";
       case "READY":
         return "Ready";
       case "OUT_FOR_DELIVERY":
         return "Out for Delivery";
-      case "DELIVERED":
-        return "Delivered";
       case "CANCELLED":
         return "Cancelled";
+      case "COMPLETED":
+        return "Completed";
       default:
         return status;
     }
