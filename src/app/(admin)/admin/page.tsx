@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { headers } from "next/headers";
 import OrderTable from "./components/OrderTable";
+import RealtimeOrdersListener from "./components/RealtimeOrdersListener";
 
 async function getOrdersData(tenantId: string) {
   const orders = await db.order.findMany({
@@ -75,6 +76,8 @@ export default async function AdminPage() {
 
   return (
     <div className="container mx-auto p-6">
+      {/* Realtime listener for new incoming orders */}
+      <RealtimeOrdersListener tenantId={tenant.id} />
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Orders</h1>
         <div className="text-lg">

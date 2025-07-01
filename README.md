@@ -71,48 +71,46 @@ npx prisma db push --force-reset
 
 ### ✅ Completed Features
 
-**Customer Ordering Flow:**
+**Customer-Facing Flow:**
 
-- Menu display with items and prices
-- Add to cart functionality with visual feedback
-- Cart management (add, remove, update quantities, special instructions)
-- Persistent cart state across sessions
-- Improved UX with bottom cart indicator and flash animations
-- Checkout modal with customer information collection
-- Order placement and confirmation
-- Order status tracking modal
+- **Dynamic Menu Display:** Menus are loaded based on the restaurant's subdomain (e.g., `marios.localhost:3000`).
+- **Interactive Cart:**
+  - Add/remove items, update quantities, and add special instructions.
+  - Persistent cart state across browsing sessions.
+  - Visual feedback on adding items.
+- **Seamless Checkout:**
+  - Checkout modal for customer details (pickup/delivery).
+  - Places the order in the database.
+- **Real-time Order Tracking:**
+  - Customers can view an order status modal.
+  - The status (e.g., `CONFIRMED`, `READY`, `OUT_FOR_DELIVERY`) updates in real-time without needing a page refresh.
 
-**Cart & Checkout Experience:**
+**Admin / Staff Flow:**
 
-- Reactive cart indicator at bottom of screen (hides when modals open)
-- "Add to cart" button feedback (turns green, shows "Added!")
-- Cart sidebar with item management
-- Checkout form with delivery/pickup options
-- Order confirmation with status tracking
+- **Admin Dashboard:** A dedicated `/admin` page for staff.
+- **Real-time Order Notifications:**
+  - New orders appear on the dashboard instantly, specific to the restaurant's tenant.
+  - No need to refresh the page to see new orders.
+- **Order Management:**
+  - View a list of all incoming and active orders.
+  - Update order status with a click. This status change is instantly reflected for the customer.
 
-**Order Management:**
+### 🚧 Next Steps
 
-- Order storage and persistence
-- Order status states (PENDING, CONFIRMED, PREPARING, etc.)
-- Order history and active order tracking
-
-### 🚧 In Development
-
-**Admin Panel (Next Priority):**
-
-- Order management dashboard for restaurant staff
-- Order status updates and notifications
-- Kitchen workflow integration
+- **Implement Authentication:** Add Clerk for user management (staff and customers).
+- **Secure Endpoints & Database:** Implement RLS policies and protect admin routes.
+- **Payment Integration:** Add a payment processor like Stripe.
+- **Kitchen Workflow:** Add more states and features for kitchen staff.
+- **User Profiles:** Allow customers to see their order history.
 
 ### 🎯 Complete User Flow
 
-1. **Customer visits restaurant subdomain** (e.g., `marios.localhost:3000`)
-2. **Browses menu** and sees available items
-3. **Adds items to cart** with immediate visual feedback
-4. **Views cart** via bottom indicator or header button
-5. **Proceeds to checkout** with customer details
-6. **Places order** and receives confirmation
-7. **Tracks order status** via order status modal
+1.  A **customer** visits a restaurant's subdomain (e.g., `marios.localhost:3000`).
+2.  They browse the menu and add items to their cart.
+3.  After checkout, an **order tracking modal** appears, showing the live status.
+4.  Simultaneously, the **new order appears on the restaurant's admin dashboard** in real-time.
+5.  A **staff member** confirms the order or updates its status (e.g., to "Ready for Pickup").
+6.  The **customer sees the status change instantly** in their order tracking modal.
 
 ---
 
@@ -180,7 +178,8 @@ In production, restaurants will use:
   - `MenuCategory` – menu categories (Pizzas, Drinks, Sides, etc.)
   - `MenuItem` – individual menu items (name, description, price, availability)
   - `User` – links `clerkUserId` to `tenantId` and user role (future)
-  - `Order` – customer orders (future)
+  - `Order` – customer orders, including status, customer details, and total amount
+  - `OrderItem` – the specific menu items included in an order
 - All tables use proper foreign key relationships for data integrity
 - Prisma is used for schema modeling and database queries
 
