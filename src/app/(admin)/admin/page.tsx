@@ -25,7 +25,7 @@ export default async function AdminPage() {
   if (!subdomain) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-600">Tenant not identified</p>
+        <p className="text-gray-600">Kund kunde inte identifieras</p>
       </div>
     );
   }
@@ -39,7 +39,7 @@ export default async function AdminPage() {
   if (!tenant) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-600">Restaurant not found</p>
+        <p className="text-gray-600">Restaurang hittades inte</p>
       </div>
     );
   }
@@ -79,16 +79,16 @@ export default async function AdminPage() {
       {/* Realtime listener for new incoming orders */}
       <RealtimeOrdersListener tenantId={tenant.id} />
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Orders</h1>
+        <h1 className="text-3xl font-bold">Beställningar</h1>
         <div className="text-lg">
           <span className="font-semibold">{tenant.displayName}</span>
         </div>
       </div>
 
       <div className="space-y-8">
-        <OrderTable title="New Orders" orders={pendingOrders} />
-        <OrderTable title="Delivery" orders={deliveryOrders} />
-        <OrderTable title="Pickup" orders={pickupOrders} />
+        <OrderTable title="Nya beställningar" orders={pendingOrders} />
+        <OrderTable title="Hemleverans" orders={deliveryOrders} />
+        <OrderTable title="Avhämtning" orders={pickupOrders} />
       </div>
     </div>
   );

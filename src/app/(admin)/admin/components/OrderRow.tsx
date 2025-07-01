@@ -71,7 +71,7 @@ export default function OrderRow({ order }: OrderRowProps) {
           {new Date(order.createdAt).toLocaleString()}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          ${order.totalAmount}
+          {Math.round(Number(order.totalAmount))} SEK
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
           {order.status === "PENDING" ? (
@@ -92,7 +92,7 @@ export default function OrderRow({ order }: OrderRowProps) {
               {/* Order Items */}
               <div>
                 <h4 className="font-semibold text-gray-800 mb-2">
-                  Order Items
+                  Beställda artiklar
                 </h4>
                 <ul className="divide-y divide-gray-200">
                   {order.items.map((item) => (
@@ -101,11 +101,11 @@ export default function OrderRow({ order }: OrderRowProps) {
                         <span>
                           {item.quantity}x {item.menuItem.name}
                         </span>
-                        <span>${item.totalPrice}</span>
+                        <span>{Math.round(Number(item.totalPrice))} SEK</span>
                       </div>
                       {item.specialInstructions && (
                         <p className="text-sm text-gray-500 mt-1">
-                          <em>Note: {item.specialInstructions}</em>
+                          <em>Notering: {item.specialInstructions}</em>
                         </p>
                       )}
                     </li>
@@ -115,26 +115,29 @@ export default function OrderRow({ order }: OrderRowProps) {
 
               {/* Customer & Order Details */}
               <div>
-                <h4 className="font-semibold text-gray-800 mb-2">Details</h4>
+                <h4 className="font-semibold text-gray-800 mb-2">Detaljer</h4>
                 <div className="text-sm space-y-2">
                   <p>
-                    <strong>Customer:</strong> {order.customerName}
+                    <strong>Kund:</strong> {order.customerName}
                   </p>
                   <p>
-                    <strong>Contact:</strong> {order.customerEmail} /{" "}
+                    <strong>Kontakt:</strong> {order.customerEmail} /{" "}
                     {order.customerPhone}
                   </p>
                   <p>
-                    <strong>Type:</strong> {order.orderType}
+                    <strong>Typ:</strong>{" "}
+                    {order.orderType === "DELIVERY"
+                      ? "Hemleverans"
+                      : "Avhämtning"}
                   </p>
                   {order.orderType === "DELIVERY" && order.deliveryAddress && (
                     <p>
-                      <strong>Address:</strong> {order.deliveryAddress}
+                      <strong>Adress:</strong> {order.deliveryAddress}
                     </p>
                   )}
                   {order.orderInstructions && (
                     <p>
-                      <strong>Notes:</strong> {order.orderInstructions}
+                      <strong>Anteckningar:</strong> {order.orderInstructions}
                     </p>
                   )}
                 </div>

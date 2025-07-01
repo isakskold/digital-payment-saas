@@ -25,7 +25,7 @@ export default function AcceptOrderButton({ orderId }: AcceptOrderButtonProps) {
       disabled={isPending}
       className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 disabled:bg-gray-300"
     >
-      {isPending ? "Accepting..." : "Accept"}
+      {isPending ? "Accepterar..." : "Acceptera"}
     </button>
   );
 }

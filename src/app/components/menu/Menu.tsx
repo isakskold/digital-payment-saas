@@ -33,7 +33,7 @@ export default async function Menu() {
   if (!subdomain) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-600">Unable to load menu</p>
+        <p className="text-gray-600">Kunde inte ladda meny</p>
       </div>
     );
   }
@@ -47,7 +47,7 @@ export default async function Menu() {
   if (!tenant) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-600">Restaurant not found</p>
+        <p className="text-gray-600">Restaurangen hittades inte</p>
       </div>
     );
   }
@@ -57,7 +57,7 @@ export default async function Menu() {
   if (!menu) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-600">Menu not available</p>
+        <p className="text-gray-600">Meny ej tillgänglig</p>
       </div>
     );
   }
@@ -106,7 +106,7 @@ export default async function Menu() {
                       {item.name}
                     </h4>
                     <span className="text-lg font-bold text-green-600">
-                      ${item.price.toFixed(2)}
+                      {Math.round(Number(item.price))} SEK
                     </span>
                   </div>
                   {item.description && (

@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
         totalAmount: order.totalAmount,
         orderType: order.orderType,
         estimatedTime:
-          data.orderType === "PICKUP" ? "15-20 minutes" : "30-45 minutes",
+          data.orderType === "PICKUP" ? "15-20 minuter" : "30-45 minuter",
       },
     });
   } catch (error) {

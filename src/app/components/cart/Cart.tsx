@@ -55,7 +55,7 @@ export default function Cart() {
         <div className="flex items-center justify-between p-4 border-b">
           <div className="flex items-center gap-2">
             <FiShoppingCart className="w-6 h-6 text-blue-600" />
-            <h2 className="text-xl font-semibold">Your Order</h2>
+            <h2 className="text-xl font-semibold">Din beställning</h2>
             {totalItems > 0 && (
               <span className="bg-blue-600 text-white text-sm px-2 py-1 rounded-full">
                 {totalItems}
@@ -75,9 +75,9 @@ export default function Cart() {
           {items.length === 0 ? (
             <div className="text-center py-8">
               <FiShoppingCart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">Your cart is empty</p>
+              <p className="text-gray-500">Din varukorg är tom</p>
               <p className="text-sm text-gray-400 mt-1">
-                Add some delicious items to get started!
+                Lägg till några goda rätter för att komma igång!
               </p>
             </div>
           ) : (
@@ -101,12 +101,12 @@ export default function Cart() {
             {/* Totals */}
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>Delsumma</span>
+                <span>{Math.round(subtotal)} SEK</span>
               </div>
               <div className="flex justify-between font-semibold text-lg border-t pt-2">
-                <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>Totalt</span>
+                <span>{Math.round(total)} SEK</span>
               </div>
             </div>
 
@@ -116,13 +116,13 @@ export default function Cart() {
                 onClick={() => setIsCheckingOut(true)}
                 className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors"
               >
-                Checkout
+                Till kassan
               </button>
               <button
                 onClick={clearCart}
                 className="w-full text-gray-600 py-2 px-4 rounded-lg border hover:bg-gray-50 transition-colors"
               >
-                Clear Cart
+                Töm varukorg
               </button>
             </div>
           </div>

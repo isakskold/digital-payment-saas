@@ -24,10 +24,10 @@ export default async function HomePage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-red-600">
-            Restaurant Not Found
+            Restaurang hittades inte
           </h1>
           <p className="text-gray-600 mt-2">
-            This restaurant doesn't exist or is not active.
+            Denna restaurang finns inte eller är inte aktiv.
           </p>
         </div>
       </div>

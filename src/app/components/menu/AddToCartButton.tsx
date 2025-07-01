@@ -39,7 +39,7 @@ export default function AddToCartButton({
       type="button"
       disabled={isAdding}
     >
-      {isAdding ? "Added!" : "Add to cart"}
+      {isAdding ? "Tillagd!" : "Lägg i varukorg"}
     </button>
   );
 }

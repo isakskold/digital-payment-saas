@@ -87,7 +87,7 @@ export default function CartItem({
               <XIcon />
             </button>
           </div>
-          <p className="text-sm text-gray-600">${item.price.toFixed(2)}</p>
+          <p className="text-sm text-gray-600">{Math.round(item.price)} SEK</p>
 
           {/* Quantity Controls */}
           <div className="flex items-center gap-2 mt-2">
@@ -113,14 +113,14 @@ export default function CartItem({
               className="text-sm text-blue-600 hover:text-blue-700"
             >
               {item.specialInstructions
-                ? "Edit instructions"
-                : "Add instructions"}
+                ? "Redigera instruktioner"
+                : "Lägg till instruktioner"}
             </button>
             {showInstructions && (
               <textarea
                 value={item.specialInstructions || ""}
                 onChange={(e) => onUpdateInstructions(item.id, e.target.value)}
-                placeholder="Special instructions (optional)"
+                placeholder="Särskilda instruktioner (valfritt)"
                 className="w-full mt-1 p-2 text-sm border rounded-md resize-none"
                 rows={2}
               />

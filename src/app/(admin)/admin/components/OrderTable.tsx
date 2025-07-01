@@ -12,7 +12,7 @@ export default function OrderTable({ title, orders }: OrderTableProps) {
       {orders.length === 0 ? (
         <div className="bg-white shadow-md rounded-lg p-6">
           <p className="text-gray-500">
-            No {title.toLowerCase()} orders at the moment.
+            Inga {title.toLowerCase()} för tillfället.
           </p>
         </div>
       ) : (
@@ -25,25 +25,25 @@ export default function OrderTable({ title, orders }: OrderTableProps) {
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Order Number
+                    Beställningsnummer
                   </th>
                   <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Customer
+                    Kund
                   </th>
                   <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Date
+                    Datum
                   </th>
                   <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Total
+                    Summa
                   </th>
                   <th
                     scope="col"

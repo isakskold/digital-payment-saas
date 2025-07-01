@@ -98,7 +98,9 @@ export default function CheckoutModal({
       onSuccess();
     } catch (error) {
       setSubmitError(
-        error instanceof Error ? error.message : "Failed to submit order"
+        error instanceof Error
+          ? error.message
+          : "Kunde inte skicka beställningen"
       );
     } finally {
       setIsSubmitting(false);
@@ -109,14 +111,16 @@ export default function CheckoutModal({
     <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Complete Your Order</h2>
+          <h2 className="text-xl font-semibold mb-4">
+            Slutför din beställning
+          </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Contact Info */}
             <div className="space-y-3">
               <input
                 type="text"
-                placeholder="Your Name"
+                placeholder="Ditt namn"
                 value={formData.name}
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
@@ -126,7 +130,7 @@ export default function CheckoutModal({
               />
               <input
                 type="email"
-                placeholder="Email"
+                placeholder="E-post"
                 value={formData.email}
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
@@ -136,7 +140,7 @@ export default function CheckoutModal({
               />
               <input
                 type="tel"
-                placeholder="Phone"
+                placeholder="Telefon"
                 value={formData.phone}
                 onChange={(e) =>
                   setFormData({ ...formData, phone: e.target.value })
@@ -149,7 +153,7 @@ export default function CheckoutModal({
             {/* Order Type */}
             <div>
               <label className="block text-sm font-medium mb-2">
-                Order Type
+                Beställningstyp
               </label>
               <div className="flex gap-2">
                 <label className="flex-1">
@@ -173,7 +177,7 @@ export default function CheckoutModal({
                         : "border-gray-300"
                     }`}
                   >
-                    Delivery
+                    Hemleverans
                   </div>
                 </label>
                 <label className="flex-1">
@@ -197,7 +201,7 @@ export default function CheckoutModal({
                         : "border-gray-300"
                     }`}
                   >
-                    Pickup
+                    Avhämtning
                   </div>
                 </label>
               </div>
@@ -206,7 +210,7 @@ export default function CheckoutModal({
             {/* Address (for delivery) */}
             {formData.orderType === "delivery" && (
               <textarea
-                placeholder="Delivery Address"
+                placeholder="Leveransadress"
                 value={formData.address}
                 onChange={(e) =>
                   setFormData({ ...formData, address: e.target.value })
@@ -219,7 +223,7 @@ export default function CheckoutModal({
 
             {/* Instructions */}
             <textarea
-              placeholder="Special instructions for your order"
+              placeholder="Särskilda instruktioner för din beställning"
               value={formData.instructions}
               onChange={(e) =>
                 setFormData({ ...formData, instructions: e.target.value })
@@ -238,8 +242,8 @@ export default function CheckoutModal({
             {/* Total */}
             <div className="border-t pt-4">
               <div className="flex justify-between font-semibold text-lg">
-                <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>Totalt</span>
+                <span>{Math.round(total)} SEK</span>
               </div>
             </div>
 
@@ -248,17 +252,16 @@ export default function CheckoutModal({
               <button
                 type="button"
                 onClick={onClose}
-                disabled={isSubmitting}
-                className="flex-1 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 py-2 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                Cancel
+                Avbryt
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400"
               >
-                {isSubmitting ? "Placing Order..." : "Place Order"}
+                {isSubmitting ? "Skickar..." : "Skicka beställning"}
               </button>
             </div>
           </form>

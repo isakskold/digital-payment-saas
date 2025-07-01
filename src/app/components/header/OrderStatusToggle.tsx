@@ -34,17 +34,17 @@ export default function OrderStatusToggle() {
   const getStatusText = (status: string) => {
     switch (status) {
       case "PENDING":
-        return "Pending";
+        return "Väntar";
       case "CONFIRMED":
-        return "Confirmed";
+        return "Bekräftad";
       case "READY":
-        return "Ready";
+        return "Redo";
       case "OUT_FOR_DELIVERY":
-        return "Out for Delivery";
+        return "Levereras";
       case "CANCELLED":
-        return "Cancelled";
+        return "Avbruten";
       case "COMPLETED":
-        return "Completed";
+        return "Klar";
       default:
         return status;
     }
@@ -68,7 +68,7 @@ export default function OrderStatusToggle() {
           )}`}
         />
         <span className="font-medium text-gray-900">
-          Order #{activeOrder.orderNumber}
+          Beställning #{activeOrder.orderNumber}
         </span>
       </div>
 

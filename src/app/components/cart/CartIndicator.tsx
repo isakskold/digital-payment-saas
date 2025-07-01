@@ -55,10 +55,10 @@ export default function CartIndicator() {
         </div>
         <div className="flex flex-col">
           <span className="text-sm font-medium">
-            {totalItems} item{totalItems !== 1 ? "s" : ""}
+            {totalItems} artikel{totalItems !== 1 ? "ar" : ""}
           </span>
           <span className="text-xs opacity-90">
-            ${subtotal.toFixed(2)} • Tap to view
+            {Math.round(subtotal)} SEK • Tryck för att visa
           </span>
         </div>
       </div>

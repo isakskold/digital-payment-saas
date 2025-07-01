@@ -37,17 +37,17 @@ export default function OrderStatusModal() {
   const getStatusText = (status: string) => {
     switch (status) {
       case "PENDING":
-        return "Order Received";
+        return "Beställning mottagen";
       case "CONFIRMED":
-        return "Confirmed & Preparing";
+        return "Bekräftad & tillagas";
       case "READY":
-        return "Ready for Pickup";
+        return "Klar för avhämtning";
       case "OUT_FOR_DELIVERY":
-        return "Out for Delivery";
+        return "Levereras";
       case "CANCELLED":
-        return "Cancelled";
+        return "Avbruten";
       case "COMPLETED":
-        return "Completed";
+        return "Slutförd";
       default:
         return status;
     }
@@ -87,10 +87,10 @@ export default function OrderStatusModal() {
             <div className="flex justify-between items-start mb-6">
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">
-                  Order #{activeOrder.orderNumber}
+                  Beställning #{activeOrder.orderNumber}
                 </h2>
                 <p className="text-gray-600 mt-1">
-                  Placed on {formatDateTime(activeOrder.createdAt)}
+                  Beställd {formatDateTime(activeOrder.createdAt)}
                 </p>
               </div>
               <button
@@ -132,13 +132,17 @@ export default function OrderStatusModal() {
                     {getStatusText(activeOrder.status)}
                   </h3>
                   <p className="text-sm opacity-80">
-                    Estimated time: {activeOrder.estimatedTime}
+                    Beräknad tid: {activeOrder.estimatedTime}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium">{activeOrder.orderType}</p>
+                  <p className="font-medium">
+                    {activeOrder.orderType === "DELIVERY"
+                      ? "Hemleverans"
+                      : "Avhämtning"}
+                  </p>
                   <p className="text-sm opacity-80">
-                    ${Number(activeOrder.totalAmount).toFixed(2)}
+                    {Math.round(Number(activeOrder.totalAmount))} SEK
                   </p>
                 </div>
               </div>
@@ -148,7 +152,7 @@ export default function OrderStatusModal() {
             {!isCompleted && (
               <div className="mb-6">
                 <h4 className="font-medium text-gray-900 mb-4">
-                  Order Progress
+                  Beställningsstatus
                 </h4>
                 <div className="flex items-center justify-between relative">
                   {/* Background lines */}
@@ -197,30 +201,32 @@ export default function OrderStatusModal() {
 
             {/* Order Details */}
             <div className="space-y-4">
-              <h4 className="font-medium text-gray-900">Order Details</h4>
+              <h4 className="font-medium text-gray-900">
+                Beställningsinformation
+              </h4>
 
               {/* Customer Info */}
               <div className="bg-gray-50 p-4 rounded-lg">
-                <h5 className="font-medium mb-2">Customer Information</h5>
+                <h5 className="font-medium mb-2">Kundinformation</h5>
                 <div className="text-sm text-gray-600 space-y-1">
                   <p>
-                    <strong>Name:</strong> {activeOrder.customerName}
+                    <strong>Namn:</strong> {activeOrder.customerName}
                   </p>
                   <p>
-                    <strong>Email:</strong> {activeOrder.customerEmail}
+                    <strong>E-post:</strong> {activeOrder.customerEmail}
                   </p>
                   <p>
-                    <strong>Phone:</strong> {activeOrder.customerPhone}
+                    <strong>Telefon:</strong> {activeOrder.customerPhone}
                   </p>
                   {activeOrder.deliveryAddress && (
                     <p>
-                      <strong>Delivery Address:</strong>{" "}
+                      <strong>Leveransadress:</strong>{" "}
                       {activeOrder.deliveryAddress}
                     </p>
                   )}
                   {activeOrder.orderInstructions && (
                     <p>
-                      <strong>Instructions:</strong>{" "}
+                      <strong>Instruktioner:</strong>{" "}
                       {activeOrder.orderInstructions}
                     </p>
                   )}
@@ -229,7 +235,7 @@ export default function OrderStatusModal() {
 
               {/* Order Items */}
               <div>
-                <h5 className="font-medium mb-3">Items Ordered</h5>
+                <h5 className="font-medium mb-3">Beställda artiklar</h5>
                 <div className="space-y-2">
                   {activeOrder.items.map((item) => (
                     <div
@@ -239,29 +245,31 @@ export default function OrderStatusModal() {
                       <div>
                         <p className="font-medium">{item.name}</p>
                         <p className="text-sm text-gray-600">
-                          Quantity: {item.quantity} × $
-                          {Number(item.unitPrice).toFixed(2)}
+                          Antal: {item.quantity} ×{" "}
+                          {Math.round(Number(item.unitPrice))} SEK
                         </p>
                         {item.specialInstructions && (
                           <p className="text-sm text-gray-500 italic">
-                            Note: {item.specialInstructions}
+                            Notering: {item.specialInstructions}
                           </p>
                         )}
                       </div>
-                      <p className="font-medium">
-                        ${Number(item.totalPrice).toFixed(2)}
-                      </p>
+                      <div className="text-right">
+                        <p className="font-medium">
+                          {Math.round(Number(item.totalPrice))} SEK
+                        </p>
+                      </div>
                     </div>
                   ))}
                 </div>
+              </div>
 
-                {/* Total */}
-                <div className="border-t pt-3 mt-3">
-                  <div className="flex justify-between items-center font-bold text-lg">
-                    <span>Total</span>
-                    <span>${Number(activeOrder.totalAmount).toFixed(2)}</span>
-                  </div>
-                </div>
+              {/* Total */}
+              <div className="border-t pt-4 flex justify-between items-center">
+                <span className="font-semibold text-lg">Total</span>
+                <span className="font-bold text-lg">
+                  {Math.round(Number(activeOrder.totalAmount))} SEK
+                </span>
               </div>
             </div>
 
@@ -271,7 +279,7 @@ export default function OrderStatusModal() {
                 onClick={closeOrderStatus}
                 className="flex-1 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                Close
+                Stäng
               </button>
               {isCompleted && (
                 <button
