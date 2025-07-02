@@ -4,13 +4,25 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   const hostname = request.headers.get("host") || "";
 
-  // Skip for main domain (your platform domain)
-  if (hostname === "localhost:3000" || hostname === "yourplatform.com") {
+  // Get the hostname from the request
+  const isProd = process.env.NODE_ENV === "production";
+  const prodDomain = "digital-payment-saas.vercel.app"; // Your Vercel domain
+
+  // Skip for admin/platform domains
+  if (hostname === "localhost:3000" || hostname === prodDomain) {
     return NextResponse.next();
   }
 
-  // Extract tenant from subdomain or custom domain
-  const subdomain = hostname.split(".")[0];
+  // Extract tenant from subdomain
+  let subdomain: string;
+
+  if (isProd) {
+    // Handle production subdomain (example: taverna.digital-payment-saas.vercel.app)
+    subdomain = hostname.replace(`.${prodDomain}`, "");
+  } else {
+    // Handle local development (example: taverna.localhost:3000)
+    subdomain = hostname.split(".")[0];
+  }
 
   // Add tenant info to headers for server components
   const requestHeaders = new Headers(request.headers);
