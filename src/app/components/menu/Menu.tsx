@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { headers } from "next/headers";
-import AddToCartButton from "./AddToCartButton";
+import MenuItem from "./MenuItem";
+import MenuTabs from "./MenuTabs";
 
 async function getMenuData(tenantId: string) {
   const menu = await db.menu.findFirst({
@@ -62,67 +63,42 @@ export default async function Menu() {
     );
   }
 
-  return (
-    <div className="space-y-8">
-      {/* Menu Header */}
-      <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">{menu.name}</h2>
-        {menu.description && (
-          <p className="text-gray-600">{menu.description}</p>
-        )}
-      </div>
+  // Get category data for tabs
+  const categories = menu.categories.map((cat) => ({
+    id: cat.id,
+    name: cat.name,
+  }));
 
-      {/* Menu Categories */}
+  return (
+    <div className="space-y-4 md:space-y-6 pt-2">
+      {/* Kategorier navigering med smooth scrolling */}
+      <MenuTabs categories={categories} />
+
+      {/* Menykategorier */}
       {menu.categories.map((category) => (
-        <div key={category.id} className="space-y-4">
-          <div className="border-b border-gray-200 pb-2">
-            <h3 className="text-2xl font-semibold text-gray-900">
+        <div
+          key={category.id}
+          className="category-section pt-3 md:pt-5 scroll-mt-[100px] md:scroll-mt-[115px]"
+          id={category.id}
+        >
+          <div>
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
               {category.name}
             </h3>
-            {category.description && (
-              <p className="text-gray-600 mt-1">{category.description}</p>
-            )}
-          </div>
 
-          {/* Menu Items Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {category.items.map((item) => (
-              <div
-                key={item.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200"
-              >
-                {item.imageUrl && (
-                  <div className="aspect-w-16 aspect-h-9 bg-gray-200">
-                    <img
-                      src={item.imageUrl}
-                      alt={item.name}
-                      className="w-full h-48 object-cover"
-                    />
-                  </div>
-                )}
-                <div className="p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="text-lg font-semibold text-gray-900">
-                      {item.name}
-                    </h4>
-                    <span className="text-lg font-bold text-green-600">
-                      {Math.round(Number(item.price))} SEK
-                    </span>
-                  </div>
-                  {item.description && (
-                    <p className="text-gray-600 text-sm mb-3">
-                      {item.description}
-                    </p>
-                  )}
-                  <AddToCartButton
-                    id={item.id}
-                    name={item.name}
-                    price={Number(item.price)}
-                    imageUrl={item.imageUrl ?? undefined}
-                  />
-                </div>
-              </div>
-            ))}
+            {/* Menyalternativ */}
+            <div className="space-y-3 md:space-y-4">
+              {category.items.map((item) => (
+                <MenuItem
+                  key={item.id}
+                  id={item.id}
+                  name={item.name}
+                  description={item.description || ""}
+                  price={Number(item.price)}
+                  imageUrl={item.imageUrl ?? undefined}
+                />
+              ))}
+            </div>
           </div>
         </div>
       ))}

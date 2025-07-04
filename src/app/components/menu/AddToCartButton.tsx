@@ -2,6 +2,7 @@
 
 import { useCartStore } from "@/zustand/useCartStore";
 import { useState } from "react";
+import { FiPlus } from "react-icons/fi";
 
 type AddToCartButtonProps = {
   id: string;
@@ -28,18 +29,19 @@ export default function AddToCartButton({
   return (
     <button
       className={`
-        w-full py-2 px-4 rounded-md font-medium transition-all duration-200
+        py-1 px-3 rounded text-sm font-medium transition-all duration-200 flex items-center
         ${
           isAdding
             ? "bg-green-500 text-white scale-95"
-            : "bg-blue-600 text-white hover:bg-blue-700"
+            : "bg-[var(--primary-color)] text-white hover:bg-[var(--primary-color)]/90"
         }
       `}
       onClick={handleAdd}
       type="button"
       disabled={isAdding}
     >
-      {isAdding ? "Tillagd!" : "Lägg i varukorg"}
+      <FiPlus className="mr-1" />
+      {isAdding ? "Tillagd!" : "Lägg till"}
     </button>
   );
 }

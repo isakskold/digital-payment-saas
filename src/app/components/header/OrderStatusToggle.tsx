@@ -53,29 +53,23 @@ export default function OrderStatusToggle() {
   return (
     <button
       onClick={toggleOrderStatus}
-      className="relative flex items-center gap-2 bg-white border-2 border-gray-200 hover:border-gray-300 rounded-lg px-4 py-2 transition-colors"
+      className="relative flex items-center gap-1.5 bg-white border border-gray-300 hover:border-gray-400 rounded-md px-2.5 py-1.5 transition-colors shadow-sm text-xs"
     >
       {ordersCount > 1 && (
-        <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+        <span className="absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
           {ordersCount}
         </span>
       )}
       {/* Status indicator */}
-      <div className="flex items-center gap-2">
-        <div
-          className={`w-3 h-3 rounded-full ${getStatusColor(
-            activeOrder.status
-          )}`}
-        />
-        <span className="font-medium text-gray-900">
-          Beställning #{activeOrder.orderNumber}
-        </span>
-      </div>
+      <div
+        className={`w-2 h-2 rounded-full ${getStatusColor(activeOrder.status)}`}
+      />
+      <span className="font-medium text-gray-900">
+        #{activeOrder.orderNumber}
+      </span>
 
       {/* Status text */}
-      <span className="text-sm text-gray-600">
-        {getStatusText(activeOrder.status)}
-      </span>
+      <span className="text-gray-600">{getStatusText(activeOrder.status)}</span>
     </button>
   );
 }
