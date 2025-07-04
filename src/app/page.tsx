@@ -7,10 +7,10 @@ import CartIndicator from "./components/cart/CartIndicator";
 export default async function HomePage() {
   try {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-100">
         <Header />
 
-        <main className="max-w-7xl mx-auto px-4 py-8">
+        <main className="max-w-3xl mx-auto w-full px-4 pb-12 pt-0">
           <Menu />
         </main>
 
