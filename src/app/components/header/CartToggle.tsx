@@ -15,7 +15,7 @@ export default function CartToggle() {
   return (
     <button
       onClick={openCart}
-      className="relative flex items-center justify-center w-9 h-9 bg-[var(--primary-color)] text-white rounded-md shadow-sm hover:bg-[var(--primary-color)]/90 transition-colors focus:outline-none"
+      className="relative flex items-center justify-center w-9 h-9 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 rounded-md shadow-sm transition-colors focus:outline-none"
       aria-label="Open cart"
     >
       <FiShoppingCart className="w-4 h-4" />

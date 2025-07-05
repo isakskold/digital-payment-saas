@@ -97,7 +97,7 @@ export default function SearchBar() {
         placeholder="Sök i menyn..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full py-1.5 md:py-2 px-3 pr-8 border border-gray-300 rounded-md text-sm md:text-base"
+        className="w-full py-1.5 md:py-2 px-3 pr-8 border border-gray-300 rounded-md text-sm md:text-base bg-white"
       />
       {searchTerm ? (
         <button
