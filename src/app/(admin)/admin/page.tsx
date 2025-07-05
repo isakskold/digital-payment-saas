@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { headers } from "next/headers";
 import OrderTable from "./components/OrderTable";
 import RealtimeOrdersListener from "./components/RealtimeOrdersListener";
+import AdminNavigation from "./components/AdminNavigation";
 
 async function getOrdersData(tenantId: string) {
   const orders = await db.order.findMany({
@@ -68,27 +69,79 @@ export default async function AdminPage() {
     (order) => order.status === "PENDING"
   );
   const deliveryOrders = serializableOrders.filter(
-    (order) => order.orderType === "DELIVERY" && order.status !== "PENDING"
+    (order) =>
+      order.orderType === "DELIVERY" &&
+      order.status !== "PENDING" &&
+      order.status !== "COMPLETED"
   );
   const pickupOrders = serializableOrders.filter(
-    (order) => order.orderType === "PICKUP" && order.status !== "PENDING"
+    (order) =>
+      order.orderType === "PICKUP" &&
+      order.status !== "PENDING" &&
+      order.status !== "COMPLETED"
+  );
+  const completedOrders = serializableOrders.filter(
+    (order) => order.status === "COMPLETED"
   );
 
+  // Create categories for navigation
+  const categories = [
+    {
+      id: "nya-bestallningar",
+      name: "Nya beställningar",
+      count: pendingOrders.length,
+    },
+    {
+      id: "hemleverans",
+      name: "Hemleverans",
+      count: deliveryOrders.length,
+    },
+    {
+      id: "avhamtning",
+      name: "Avhämtning",
+      count: pickupOrders.length,
+    },
+    {
+      id: "slutforda-bestallningar",
+      name: "Slutförda beställningar",
+      count: completedOrders.length,
+    },
+  ];
+
   return (
-    <div className="container mx-auto p-6">
+    <div className="min-h-screen bg-gray-50">
       {/* Realtime listener for new incoming orders */}
       <RealtimeOrdersListener tenantId={tenant.id} />
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Beställningar</h1>
-        <div className="text-lg">
-          <span className="font-semibold">{tenant.displayName}</span>
-        </div>
-      </div>
 
-      <div className="space-y-8">
-        <OrderTable title="Nya beställningar" orders={pendingOrders} />
-        <OrderTable title="Hemleverans" orders={deliveryOrders} />
-        <OrderTable title="Avhämtning" orders={pickupOrders} />
+      {/* Admin Navigation */}
+      <AdminNavigation categories={categories} />
+
+      {/* Main Content */}
+      <div className="container mx-auto p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+          <h1 className="text-2xl sm:text-3xl font-bold">Beställningar</h1>
+          <div className="text-base sm:text-lg">
+            <span className="font-semibold">{tenant.displayName}</span>
+          </div>
+        </div>
+
+        <div className="space-y-6 sm:space-y-8">
+          <div id="nya-bestallningar" className="scroll-mt-20">
+            <OrderTable title="Nya beställningar" orders={pendingOrders} />
+          </div>
+          <div id="hemleverans" className="scroll-mt-20">
+            <OrderTable title="Hemleverans" orders={deliveryOrders} />
+          </div>
+          <div id="avhamtning" className="scroll-mt-20">
+            <OrderTable title="Avhämtning" orders={pickupOrders} />
+          </div>
+          <div id="slutforda-bestallningar" className="scroll-mt-20">
+            <OrderTable
+              title="Slutförda beställningar"
+              orders={completedOrders}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
