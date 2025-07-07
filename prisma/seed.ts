@@ -5,12 +5,12 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding database...");
 
-  // Create Taverna Storfors tenant
+  // Create new tenant
   const tenant = await prisma.tenant.create({
     data: {
-      name: "taverna-storfors",
-      subdomain: "taverna",
-      displayName: "Taverna Storfors",
+      name: "pizzeria-restaurang",
+      subdomain: "milano",
+      displayName: "Pizzeria Restaurang",
       isActive: true,
     },
   });
@@ -19,7 +19,7 @@ async function main() {
     `✅ Created tenant: ${tenant.displayName} (${tenant.subdomain}.yourplatform.com)`
   );
 
-  // Create menu for Taverna Storfors
+  // Create menu for the new tenant
   console.log(`\n🍕 Creating menu for ${tenant.displayName}...`);
 
   // Create default menu
@@ -34,12 +34,12 @@ async function main() {
     },
   });
 
-  // Create categories for Taverna Storfors
-  const tavernaCategories = await Promise.all([
+  // Create categories
+  const categories = await Promise.all([
     prisma.menuCategory.create({
       data: {
         menuId: menu.id,
-        name: "Taverna Pizza Klass 1",
+        name: "Pizza Klass 1",
         description: "TOMATSÅS OCH OST INGÅR I ALLA PIZZOR",
         sortOrder: 1,
         isActive: true,
@@ -48,7 +48,7 @@ async function main() {
     prisma.menuCategory.create({
       data: {
         menuId: menu.id,
-        name: "Taverna Pizza Klass 2",
+        name: "Pizza Klass 2",
         description: "TOMATSÅS OCH OST INGÅR I ALLA PIZZOR",
         sortOrder: 2,
         isActive: true,
@@ -57,7 +57,7 @@ async function main() {
     prisma.menuCategory.create({
       data: {
         menuId: menu.id,
-        name: "Taverna Pizza Klass 3",
+        name: "Pizza Klass 3",
         description: "TOMATSÅS OCH OST INGÅR I ALLA PIZZOR",
         sortOrder: 3,
         isActive: true,
@@ -66,7 +66,7 @@ async function main() {
     prisma.menuCategory.create({
       data: {
         menuId: menu.id,
-        name: "Taverna Pizza Klass 4",
+        name: "Pizza Klass 4",
         description: "TOMATSÅS OCH OST INGÅR I ALLA PIZZOR",
         sortOrder: 4,
         isActive: true,
@@ -75,7 +75,7 @@ async function main() {
     prisma.menuCategory.create({
       data: {
         menuId: menu.id,
-        name: "Taverna Vegetariska Pizzor",
+        name: "Vegetariska Pizzor",
         description: "Vegetariska pizzor med tomatsås och ost",
         sortOrder: 5,
         isActive: true,
@@ -84,7 +84,7 @@ async function main() {
     prisma.menuCategory.create({
       data: {
         menuId: menu.id,
-        name: "Taverna Kycklingpizzor",
+        name: "Kycklingpizzor",
         description: "Utsökta pizzor med kyckling",
         sortOrder: 6,
         isActive: true,
@@ -93,7 +93,7 @@ async function main() {
     prisma.menuCategory.create({
       data: {
         menuId: menu.id,
-        name: "Taverna Specialpizzor",
+        name: "Specialpizzor",
         description: "Till alla pizzor ingår bearnaisesås",
         sortOrder: 7,
         isActive: true,
@@ -102,7 +102,7 @@ async function main() {
     prisma.menuCategory.create({
       data: {
         menuId: menu.id,
-        name: "Taverna Kebabpizzor",
+        name: "Kebabpizzor",
         description:
           "Till alla kebabpizzor ingår valfri sås. Välj mellan nötkött och gyros",
         sortOrder: 8,
@@ -112,7 +112,7 @@ async function main() {
     prisma.menuCategory.create({
       data: {
         menuId: menu.id,
-        name: "Taverna Förrätter",
+        name: "Förrätter",
         description: "Goda förrätter",
         sortOrder: 9,
         isActive: true,
@@ -121,7 +121,7 @@ async function main() {
     prisma.menuCategory.create({
       data: {
         menuId: menu.id,
-        name: "Taverna Kötträtter",
+        name: "Kötträtter",
         description:
           "Serveras med stekt potatis, pommes frites eller klyftpotatis",
         sortOrder: 10,
@@ -131,7 +131,7 @@ async function main() {
     prisma.menuCategory.create({
       data: {
         menuId: menu.id,
-        name: "Taverna Tillbehör",
+        name: "Tillbehör",
         description: "Extra tillbehör",
         sortOrder: 11,
         isActive: true,
@@ -161,7 +161,7 @@ async function main() {
     { name: "Salami", description: "Tomatsås, ost, salami", price: 105 },
   ];
 
-  // Pizza Klass 2 - Sample items
+  // Pizza Klass 2
   const pizzaKlass2 = [
     {
       name: "Calzone",
@@ -190,7 +190,7 @@ async function main() {
     },
   ];
 
-  // Pizza Klass 3 - Sample items
+  // Pizza Klass 3
   const pizzaKlass3 = [
     {
       name: "Pazza",
@@ -219,7 +219,7 @@ async function main() {
     },
   ];
 
-  // Pizza Klass 4 - Sample items
+  // Pizza Klass 4
   const pizzaKlass4 = [
     {
       name: "Quattro Stagioni",
@@ -274,7 +274,7 @@ async function main() {
       price: 135,
     },
     {
-      name: "Rita special",
+      name: "Milano special",
       description: "Tomatsås, ost, kyckling, räkor, jordnötter, bearnaisesås",
       price: 135,
     },
@@ -315,7 +315,7 @@ async function main() {
       price: 135,
     },
     {
-      name: "Värmland",
+      name: "Milano kebab",
       description: "Tomatsås, ost, kebabkött, ananas, banan, curry",
       price: 135,
     },
@@ -347,11 +347,7 @@ async function main() {
       description: "Med rödvinssås eller bearnaisesås",
       price: 199,
     },
-    {
-      name: "Kycklingfilé på spett",
-      description: "Med tzatziki",
-      price: 169,
-    },
+    { name: "Kycklingfilé på spett", description: "Med tzatziki", price: 169 },
   ];
 
   // Extra tillbehör
@@ -372,169 +368,35 @@ async function main() {
     { name: "Pizzasallad", description: "Portion pizzasallad", price: 15 },
   ];
 
-  // Create Pizza Klass 1 items
-  for (let i = 0; i < pizzaKlass1.length; i++) {
-    await prisma.menuItem.create({
-      data: {
-        menuId: menu.id,
-        categoryId: tavernaCategories[0].id,
-        name: pizzaKlass1[i].name,
-        description: pizzaKlass1[i].description,
-        price: pizzaKlass1[i].price,
-        isAvailable: true,
-        sortOrder: i + 1,
-      },
-    });
-  }
+  // Create all menu items
+  const menuItemsData = [
+    { items: pizzaKlass1, categoryIndex: 0 },
+    { items: pizzaKlass2, categoryIndex: 1 },
+    { items: pizzaKlass3, categoryIndex: 2 },
+    { items: pizzaKlass4, categoryIndex: 3 },
+    { items: vegetariskaPizzor, categoryIndex: 4 },
+    { items: kycklingpizzor, categoryIndex: 5 },
+    { items: specialpizzor, categoryIndex: 6 },
+    { items: kebabpizzor, categoryIndex: 7 },
+    { items: forratter, categoryIndex: 8 },
+    { items: kottratter, categoryIndex: 9 },
+    { items: extraTillbehor, categoryIndex: 10 },
+  ];
 
-  // Create Pizza Klass 2 items
-  for (let i = 0; i < pizzaKlass2.length; i++) {
-    await prisma.menuItem.create({
-      data: {
-        menuId: menu.id,
-        categoryId: tavernaCategories[1].id,
-        name: pizzaKlass2[i].name,
-        description: pizzaKlass2[i].description,
-        price: pizzaKlass2[i].price,
-        isAvailable: true,
-        sortOrder: i + 1,
-      },
-    });
-  }
-
-  // Create Pizza Klass 3 items
-  for (let i = 0; i < pizzaKlass3.length; i++) {
-    await prisma.menuItem.create({
-      data: {
-        menuId: menu.id,
-        categoryId: tavernaCategories[2].id,
-        name: pizzaKlass3[i].name,
-        description: pizzaKlass3[i].description,
-        price: pizzaKlass3[i].price,
-        isAvailable: true,
-        sortOrder: i + 1,
-      },
-    });
-  }
-
-  // Create Pizza Klass 4 items
-  for (let i = 0; i < pizzaKlass4.length; i++) {
-    await prisma.menuItem.create({
-      data: {
-        menuId: menu.id,
-        categoryId: tavernaCategories[3].id,
-        name: pizzaKlass4[i].name,
-        description: pizzaKlass4[i].description,
-        price: pizzaKlass4[i].price,
-        isAvailable: true,
-        sortOrder: i + 1,
-      },
-    });
-  }
-
-  // Create Vegetariska Pizzor items
-  for (let i = 0; i < vegetariskaPizzor.length; i++) {
-    await prisma.menuItem.create({
-      data: {
-        menuId: menu.id,
-        categoryId: tavernaCategories[4].id,
-        name: vegetariskaPizzor[i].name,
-        description: vegetariskaPizzor[i].description,
-        price: vegetariskaPizzor[i].price,
-        isAvailable: true,
-        sortOrder: i + 1,
-      },
-    });
-  }
-
-  // Create Kycklingpizzor items
-  for (let i = 0; i < kycklingpizzor.length; i++) {
-    await prisma.menuItem.create({
-      data: {
-        menuId: menu.id,
-        categoryId: tavernaCategories[5].id,
-        name: kycklingpizzor[i].name,
-        description: kycklingpizzor[i].description,
-        price: kycklingpizzor[i].price,
-        isAvailable: true,
-        sortOrder: i + 1,
-      },
-    });
-  }
-
-  // Create Specialpizzor items
-  for (let i = 0; i < specialpizzor.length; i++) {
-    await prisma.menuItem.create({
-      data: {
-        menuId: menu.id,
-        categoryId: tavernaCategories[6].id,
-        name: specialpizzor[i].name,
-        description: specialpizzor[i].description,
-        price: specialpizzor[i].price,
-        isAvailable: true,
-        sortOrder: i + 1,
-      },
-    });
-  }
-
-  // Create Kebabpizzor items
-  for (let i = 0; i < kebabpizzor.length; i++) {
-    await prisma.menuItem.create({
-      data: {
-        menuId: menu.id,
-        categoryId: tavernaCategories[7].id,
-        name: kebabpizzor[i].name,
-        description: kebabpizzor[i].description,
-        price: kebabpizzor[i].price,
-        isAvailable: true,
-        sortOrder: i + 1,
-      },
-    });
-  }
-
-  // Create Förrätter items
-  for (let i = 0; i < forratter.length; i++) {
-    await prisma.menuItem.create({
-      data: {
-        menuId: menu.id,
-        categoryId: tavernaCategories[8].id,
-        name: forratter[i].name,
-        description: forratter[i].description,
-        price: forratter[i].price,
-        isAvailable: true,
-        sortOrder: i + 1,
-      },
-    });
-  }
-
-  // Create Kötträtter items
-  for (let i = 0; i < kottratter.length; i++) {
-    await prisma.menuItem.create({
-      data: {
-        menuId: menu.id,
-        categoryId: tavernaCategories[9].id,
-        name: kottratter[i].name,
-        description: kottratter[i].description,
-        price: kottratter[i].price,
-        isAvailable: true,
-        sortOrder: i + 1,
-      },
-    });
-  }
-
-  // Create Extra Tillbehör items
-  for (let i = 0; i < extraTillbehor.length; i++) {
-    await prisma.menuItem.create({
-      data: {
-        menuId: menu.id,
-        categoryId: tavernaCategories[10].id,
-        name: extraTillbehor[i].name,
-        description: extraTillbehor[i].description,
-        price: extraTillbehor[i].price,
-        isAvailable: true,
-        sortOrder: i + 1,
-      },
-    });
+  for (const { items, categoryIndex } of menuItemsData) {
+    for (let i = 0; i < items.length; i++) {
+      await prisma.menuItem.create({
+        data: {
+          menuId: menu.id,
+          categoryId: categories[categoryIndex].id,
+          name: items[i].name,
+          description: items[i].description,
+          price: items[i].price,
+          isAvailable: true,
+          sortOrder: i + 1,
+        },
+      });
+    }
   }
 
   console.log(`  ✅ Created menu with categories and items`);
@@ -543,21 +405,12 @@ async function main() {
   console.log("\n📊 Summary:");
   console.log(`  - 1 restaurant created`);
   console.log(`  - 1 menu created`);
-  console.log(`  - 11 categories created`);
+  console.log(`  - ${categories.length} categories created`);
   console.log(
-    `  - ${
-      pizzaKlass1.length +
-      pizzaKlass2.length +
-      pizzaKlass3.length +
-      pizzaKlass4.length +
-      vegetariskaPizzor.length +
-      kycklingpizzor.length +
-      specialpizzor.length +
-      kebabpizzor.length +
-      forratter.length +
-      kottratter.length +
-      extraTillbehor.length
-    } menu items created`
+    `  - ${menuItemsData.reduce(
+      (acc, { items }) => acc + items.length,
+      0
+    )} menu items created`
   );
 }
 

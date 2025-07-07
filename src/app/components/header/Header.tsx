@@ -25,17 +25,15 @@ export default async function Header() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 mt-4 text-xs sm:text-sm md:text-base text-gray-200">
             <div className="flex items-center">
               <span className="h-2 md:h-2.5 w-2 md:w-2.5 rounded-full bg-white mr-2"></span>
-              <span>Open until 10:00 PM</span>
+              <span>Öpper tills 22:00</span>
             </div>
             <div className="flex items-center">
               <FiMapPin className="w-3 sm:w-4 h-3 sm:h-4 mr-2 flex-shrink-0" />
-              <span className="text-center sm:text-left">
-                Stationsgatan 74, 688 30 Storfors
-              </span>
+              <span className="text-center sm:text-left">Storgatan 1</span>
             </div>
             <div className="flex items-center">
               <FiPhone className="w-3 sm:w-4 h-3 sm:h-4 mr-2 flex-shrink-0" />
-              <span>0550-622 43</span>
+              <span>08 000 000</span>
             </div>
           </div>
         </div>

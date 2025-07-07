@@ -4,9 +4,9 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   // const hostname = request.headers.get("host") || "";
 
-  // For now, always set taverna as the default tenant
+  // For now, always set milano as the default tenant
   const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-tenant-subdomain", "taverna");
+  requestHeaders.set("x-tenant-subdomain", "milano");
 
   // Keep the multi-tenant logic commented but ready for later
   /*
