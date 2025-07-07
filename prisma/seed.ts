@@ -539,6 +539,139 @@ async function main() {
 
   console.log(`  ✅ Created menu with categories and items`);
 
+  // ────────────────────────────────────────────────────────────────
+  // Ny tenant: Pizzeria Folkets Hus (Storfors)
+  // ────────────────────────────────────────────────────────────────
+
+  // Skapa tenant
+  const folketsTenant = await prisma.tenant.create({
+    data: {
+      name: "pizzeria-folkets-hus",
+      subdomain: "folketshus",
+      displayName: "Pizzeria Folkets Hus",
+      isActive: true,
+    },
+  });
+
+  console.log(
+    `✅ Created tenant: ${folketsTenant.displayName} (${folketsTenant.subdomain}.yourplatform.com)`
+  );
+
+  // Skapa huvudmeny
+  const folketsMenu = await prisma.menu.create({
+    data: {
+      tenantId: folketsTenant.id,
+      name: "Huvudmeny",
+      description: "Klassiska pizzor – tomatsås och ost ingår",
+      isDefault: true,
+      isActive: true,
+      sortOrder: 1,
+    },
+  });
+
+  console.log(`\n🍕 Creating menu for ${folketsTenant.displayName}...`);
+
+  // Skapa pizzakategorier (klass 1-4)
+  const folketsCategories = await Promise.all([
+    prisma.menuCategory.create({
+      data: {
+        menuId: folketsMenu.id,
+        name: "Pizzor Klass 1",
+        description: "Tomatsås och ost ingår i alla pizzor",
+        sortOrder: 1,
+        isActive: true,
+      },
+    }),
+    prisma.menuCategory.create({
+      data: {
+        menuId: folketsMenu.id,
+        name: "Pizzor Klass 2",
+        description: "Tomatsås och ost ingår i alla pizzor",
+        sortOrder: 2,
+        isActive: true,
+      },
+    }),
+    prisma.menuCategory.create({
+      data: {
+        menuId: folketsMenu.id,
+        name: "Pizzor Klass 3",
+        description: "Tomatsås och ost ingår i alla pizzor",
+        sortOrder: 3,
+        isActive: true,
+      },
+    }),
+    prisma.menuCategory.create({
+      data: {
+        menuId: folketsMenu.id,
+        name: "Pizzor Klass 4",
+        description: "Tomatsås och ost ingår i alla pizzor",
+        sortOrder: 4,
+        isActive: true,
+      },
+    }),
+  ]);
+
+  // Lägg till pizzor för varje klass
+  for (let i = 0; i < pizzaKlass1.length; i++) {
+    await prisma.menuItem.create({
+      data: {
+        menuId: folketsMenu.id,
+        categoryId: folketsCategories[0].id,
+        name: pizzaKlass1[i].name,
+        description: pizzaKlass1[i].description,
+        price: pizzaKlass1[i].price,
+        isAvailable: true,
+        sortOrder: i + 1,
+      },
+    });
+  }
+
+  for (let i = 0; i < pizzaKlass2.length; i++) {
+    await prisma.menuItem.create({
+      data: {
+        menuId: folketsMenu.id,
+        categoryId: folketsCategories[1].id,
+        name: pizzaKlass2[i].name,
+        description: pizzaKlass2[i].description,
+        price: pizzaKlass2[i].price,
+        isAvailable: true,
+        sortOrder: i + 1,
+      },
+    });
+  }
+
+  for (let i = 0; i < pizzaKlass3.length; i++) {
+    await prisma.menuItem.create({
+      data: {
+        menuId: folketsMenu.id,
+        categoryId: folketsCategories[2].id,
+        name: pizzaKlass3[i].name,
+        description: pizzaKlass3[i].description,
+        price: pizzaKlass3[i].price,
+        isAvailable: true,
+        sortOrder: i + 1,
+      },
+    });
+  }
+
+  for (let i = 0; i < pizzaKlass4.length; i++) {
+    await prisma.menuItem.create({
+      data: {
+        menuId: folketsMenu.id,
+        categoryId: folketsCategories[3].id,
+        name: pizzaKlass4[i].name,
+        description: pizzaKlass4[i].description,
+        price: pizzaKlass4[i].price,
+        isAvailable: true,
+        sortOrder: i + 1,
+      },
+    });
+  }
+
+  console.log(
+    `  ✅ Created menu with categories and items för ${folketsTenant.displayName}`
+  );
+
   console.log("\n🎉 Seeding completed!");
   console.log("\n📊 Summary:");
   console.log(`  - 1 restaurant created`);

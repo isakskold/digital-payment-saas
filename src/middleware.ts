@@ -4,9 +4,9 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   // const hostname = request.headers.get("host") || "";
 
-  // For now, always set taverna as the default tenant
+  // För demo-syften: hårdkoda folkets hus som standard-tenant
   const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-tenant-subdomain", "taverna");
+  requestHeaders.set("x-tenant-subdomain", "folketshus");
 
   // Keep the multi-tenant logic commented but ready for later
   /*
